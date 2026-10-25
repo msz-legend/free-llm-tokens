@@ -7,7 +7,7 @@ import path from 'node:path';
 import os from 'node:os';
 import process from 'node:process';
 import { loadSources, loadRules, gateParams } from './lib/registry.js';
-import { supportedProtocolsFor, pid, envKeyName, writeOpencode, writeClaude, writeCodexProvider, codexActivate, persistEnvVar } from './lib/harness.js';
+import { supportedProtocolsFor, pid, envKeyName, writeOpencode, writeClaude, writeCodexProvider, codexActivate, persistEnvVar, readClaudeActive } from './lib/harness.js';
 import { probeCompletion, probeAnthropic, probeKeyModels, probeToolCall } from './lib/probe.js';
 import { ask, readJson, writeJson, STATE_DIR, hasFlag, todayStamp } from './lib/util.js';
 
@@ -26,7 +26,9 @@ async function resolveKey(sourceId) {
   if (process.env[envName]) return { key: process.env[envName], how: `env:${envName}` };
   if (hasFlag('--key-stdin')) return { key: fs.readFileSync(0, 'utf8').trim(), how: 'stdin' };
   human(`🔑 输入 key 后回车（只写入 harness 原生配置，skill 不建第二份副本库）→ 环境变量名：${envName}`);
-  const key = await ask('> ');
+  let key;
+  try { key = await ask('> '); }
+  catch (e) { console.error(`[connect] ${e.message}。示例：node scripts/connect.js ${sourceId} --key <key> --harness …`); process.exit(2); }
   if (!key.trim()) { console.error('[connect] 未收到 key，退出'); process.exit(2); }
   return { key: key.trim(), how: 'prompt' };
 }
@@ -71,7 +73,9 @@ async function main() {
   for (const c of src.caveats ?? []) human(`  ⚠ ${c}`);
   human(`  ⚠ 隐私：接入后你经此 provider 发送的所有内容（含代码）该厂商可见；免费档普遍附训练/记录条款。`);
   if (!confirmedBefore && !hasFlag('--yes')) {
-    const a = await ask('确认接入？(y/N) ');
+    let a;
+    try { a = await ask('确认接入？(y/N) '); }
+    catch { console.error('[connect] 隐私确认需要交互终端；非交互环境请显式加 --yes'); process.exit(2); }
     if (!/^y(es)?$/i.test(a.trim())) { human('已取消'); process.exit(0); }
   }
 

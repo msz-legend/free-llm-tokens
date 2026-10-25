@@ -56,9 +56,11 @@ export function hasFlag(name) {
   return process.argv.includes(name);
 }
 
-export async function ask(question, { hidden } = {}) {
+export async function ask(question) {
+  if (!process.stdin.isTTY) {
+    throw new Error('stdin 非交互终端，无法交互输入——请在真实终端运行，或给脚本传 --key / --yes 等显式参数');
+  }
   const readline = await import('node:readline/promises');
   const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
-  // hidden 模式：prompt 仍走明文（node 无内建隐藏输入，TTY 自行处理），仅兼容管道
   return rl.question(question).finally(() => rl.close());
 }

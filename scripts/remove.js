@@ -24,7 +24,9 @@ async function main() {
   const harnesses = hi === 'all' ? ['opencode', 'codex', 'claude'] : String(hi).split(',').filter(Boolean);
 
   if (!hasFlag('--yes')) {
-    const a = await ask(`确认从 ${harnesses.join('/')} 移除 ${src.name}? (y/N) `);
+    let a;
+    try { a = await ask(`确认从 ${harnesses.join('/')} 移除 ${src.name}? (y/N) `); }
+    catch { console.error('[remove] 需要交互确认；非交互环境请显式加 --yes'); process.exit(2); }
     if (!/^y(es)?$/i.test(a.trim())) { human('已取消'); process.exit(0); }
   }
   const removed = {};
@@ -49,11 +51,9 @@ async function main() {
       const re = new RegExp(`# free-models:begin:${id}\\b[\\s\\S]*?# free-models:end:${id}\\b\\n?`, 'g');
       if (re.test(text)) {
         text = text.replace(re, '');
-        // 顶层激活行指向该 provider 的：整行注释掉（保留用户回看历史）
-        const lines = text.split(/\r?\n/).map((line) => {
-          if (/^\s*model_provider\s*=\s*["']free-[\w-]+["']?\s*(#.*)?$/.test(line)) return line.replace(/^/, '# [free-models removed] ').trimStart() + '#';
-          return line;
-        });
+        // 顶层激活行指向本 provider 的：整行注释保留历史（其它 provider 的激活行不动）
+        const actRe = new RegExp(`^\\s*model_provider\\s*=\\s*["']${id}["']?\\s*(#.*)?$`);
+        const lines = text.split(/\r?\n/).map((line) => (actRe.test(line) ? `# [free-models removed] ${line.trim()}` : line));
         fs.writeFileSync(file, lines.join('\n'), 'utf8');
         removed.codex = true;
         human(`✅ Codex：已移除 ${id} 段（备份 ${bak ? path.basename(bak) : '无'}；激活行已注释，请重选默认 provider）`);
@@ -65,7 +65,9 @@ async function main() {
     const cfg = readJson(CONFIG_PATHS.claude, null);
     const env = cfg?.env;
     const connected = readJson(path.join(STATE_DIR, 'connected.json'), { records: [] });
-    const ours = connected.records?.some((r) => r.sourceId === sourceId && (r.targets ?? []).includes('claude'));
+    // 单激活位归属：claude env 由"最后一条带 claude target 的接入记录"拥有
+    const lastClaude = [...(connected.records ?? [])].reverse().find((r) => (r.targets ?? []).includes('claude'));
+    const ours = lastClaude && lastClaude.sourceId === sourceId;
     if (env?.ANTHROPIC_BASE_URL && ours) {
       const bak = backupFile(CONFIG_PATHS.claude, 'claude-remove');
       delete env.ANTHROPIC_BASE_URL;

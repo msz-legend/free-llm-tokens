@@ -88,21 +88,25 @@ async function main() {
     const r = await testSource(src, null, gp);
     outcomes.push(r);
     human(`  ${r.verdict === 'ok' ? '✅' : r.verdict === 'partial' ? '△' : '✗'} ${r.verdict === 'no-key' ? `未发现 key：先 connect 或 export ${envKeyName(src.id)}` : Object.entries(r.steps ?? {}).map(([k, v]) => `${k}=${v}`).join(' · ') || r.verdict}`);
-    cache.badges ??= {};
-    cache.badges[src.id] = { verdict: r.verdict, steps: r.steps ?? {}, at: r.at, model: r.model ?? null };
-    cache.probeHistory ??= {};
-    cache.probeHistory[src.id] ??= [];
-    cache.probeHistory[src.id].push({ at: r.at, verdict: r.verdict });
-    if (cache.probeHistory[src.id].length > 30) cache.probeHistory[src.id] = cache.probeHistory[src.id].slice(-30);
+  }
+  // 写回前重读 cache，按源合并（并发 test.js 时避免整文件覆盖丢徽章）
+  const merged = readJson(STATE.cacheJson, cache);
+  for (const r of outcomes) {
+    merged.badges ??= {};
+    merged.badges[r.sourceId] = { verdict: r.verdict, steps: r.steps ?? {}, at: r.at, model: r.model ?? null };
+    merged.probeHistory ??= {};
+    merged.probeHistory[r.sourceId] ??= [];
+    merged.probeHistory[r.sourceId].push({ at: r.at, verdict: r.verdict });
+    if (merged.probeHistory[r.sourceId].length > 30) merged.probeHistory[r.sourceId] = merged.probeHistory[r.sourceId].slice(-30);
   }
   // 死源候选：连续 deadStreak 失败
   const deadStreak = loadRules().flap?.deadStreak ?? 3;
-  cache.deadCandidates = Object.entries(cache.probeHistory ?? {})
+  merged.deadCandidates = Object.entries(merged.probeHistory ?? {})
     .filter(([, h]) => h.slice(-deadStreak).length >= deadStreak && h.slice(-deadStreak).every((x) => x.verdict === 'fail'))
     .map(([id]) => id);
-  writeJson(STATE.cacheJson, cache);
+  writeJson(STATE.cacheJson, merged);
 
-  human(`\n徽章已写入 ${path.basename(STATE.cacheJson)}${cache.deadCandidates.length ? `；死源候选：${cache.deadCandidates.join(', ')}（refresh 报告里经确认清理）` : ''}`);
+  human(`\n徽章已写入 ${path.basename(STATE.cacheJson)}${merged.deadCandidates.length ? `；死源候选：${merged.deadCandidates.join(', ')}（refresh 报告里经确认清理）` : ''}`);
   if (hasFlag('--json')) console.log(JSON.stringify(outcomes, null, 2));
 }
 

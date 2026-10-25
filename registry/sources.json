@@ -35,14 +35,15 @@
         "responses": "https://open.bigmodel.cn/api/v1",
         "anthropic": {
           "base": "https://open.bigmodel.cn/api/anthropic",
-          "note": "URL 官方确认；免费 Flash 走此端点未经官方背书（2026-10-16 起 key 分类管理，从无套餐账号走标准计费）→ test.js 实测；失败自动降级 openai 主路径"
+          "note": "URL 官方确认；标准 key + glm-4.7-flash 已实测 /v1/messages 通过（Bearer，2026-10-25 test.js）；路径仍属未经官方背书的免费档用法，Python SDK FoxAI 项目已公开使用此端点"
         }
       },
       "gates": { "ctx": 200000, "rpm": "限速口径：1 并发（mnfst 2026-10-23）", "rpd": "unverified", "toolcall": true, "verified": "2026-10-25" },
       "models": { "strategy": "static", "ids": ["glm-4.7-flash"], "note": "GLM-4.5-Flash 已公告下线，改用 4.7；另有视觉 GLM-4.6V-Flash 免费档" },
       "caveats": [
         "2026-10-16 起标准 API key 与 Coding Plan key 分类管理、互不通用：本源只用标准 key（按量计费账户的免费模型 ¥0）",
-        "Anthropic 端点绑定 Coding Plan 语义，免费档走该协议属未经官方背书路径"
+        "Anthropic 端点在标准 key 下实测可通（2026-10-25，glm-4.7-flash 200 OK）；免费档走该协议仍属未经官方背书路径，官方文档只给 Coding Plan 场景",
+        "响应 content 偶为空串（glm-4.7-flash 思考型输出），tool-call 正常"
       ],
       "upstream": ["mnfst-data", "manual"]
     },

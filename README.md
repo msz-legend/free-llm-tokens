@@ -77,6 +77,8 @@ node "$env:USERPROFILE\.agents\skills\free-llm-tokens\scripts\status.js"
 
 卸载 = 删除对应目录，重启 harness 生效。
 
+> **把源接进 Hermes 本体**是手工步骤（Hermes 要求用 `hermes config set`，不能让 agent 代改 `config.yaml`），照 [docs/HERMES.md](docs/HERMES.md) 做。
+
 **兼容说明**：数据目录沿用 `~/.free-models`、环境变量沿用 `FREE_MODELS_*` 前缀、Codex 锚点注释沿用 `# free-models:begin/end`——与既有安装完全兼容，无需迁移。
 
 ## 收录边界

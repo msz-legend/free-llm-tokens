@@ -57,6 +57,7 @@ node "$S/scripts/status.js"
 - 「接 claude code」→ 有 Anthropic 端点的源：openrouter（皮肤）/ kilo（隐性）/ modelscope / siliconflow / bigmodel（免费 Flash 走此端点未经官方背书，探针出结论）。Claude 单激活位：接入即覆写（先警告再备份）。
 - 「429 了 / 换一个」→ `status.js` 看徽章 → `switch.js <另一源>`（claude 则 re-connect）→ 提醒 OpenRouter 余额为负会连带屏蔽 free。
 - 「这个源不行，删掉」→ 告知 fact-card 影响 → **用户确认后** `remove.js <id> --yes`。
+- 「接 Hermes」→ 本 skill **不写 Hermes 配置**：让用户照 `$S/docs/HERMES.md` 的手工步骤做（思路：key 进 `<hermes home>/.env`，`hermes config set model.aliases.<name> <provider>/<model>`），不要替他改 `config.yaml`。
 
 ## 网络与大陆访问
 

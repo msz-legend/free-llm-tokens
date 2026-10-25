@@ -4,7 +4,7 @@
 
 ## 我们的原则
 
-1. **key 只属于你**。free-models 不注册账号、不拿走 key、不建第二份 keyring。
+1. **key 只属于你**。free-llm-tokens 不注册账号、不拿走 key、不建第二份 keyring。
    key 由你亲手输入（终端交互）或在对话里显式给出后经 `--key` 传入，最终落在三类**原生**位置：
    - OpenCode：`~/.config/opencode/opencode.json` 的 `provider.free-<id>.options.apiKey`
    - OpenAI Codex：用户级环境变量 `FREE_MODELS_<ID>_KEY`（Windows `setx`），`config.toml` 里只存变量名

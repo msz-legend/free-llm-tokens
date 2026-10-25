@@ -131,7 +131,7 @@ async function main() {
   // 写当日报告
   const rptFile = path.join(STATE.reportsDir, `${results.date}.md`);
   const lines = [
-    `# free-models 日报 ${results.date}`, '',
+    `# free-llm-tokens 日报 ${results.date}`, '',
     `feeds：openrouter ${or?.ok ? `OK（${or.free.length} free / ${or.total}）` : 'FAIL'}・mnfst ${mf?.ok ? `OK（${mf.count}，快照 ${mf.fetchedAt}）` : 'FAIL（保持 L1 策展）'}`, '',
     `门槛筛选（pass/global${countPass}・条件通过${countCond}・被筛${countFail}）`, '',
     '## 通过/条件通过', '',

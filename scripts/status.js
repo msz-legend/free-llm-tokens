@@ -54,7 +54,7 @@ function main() {
     deadCandidates: cache.deadCandidates ?? [],
   };
 
-  human(`# free-models status — ${todayStamp()}`);
+  human(`# free-llm-tokens status — ${todayStamp()}`);
   human(`\n已接入：OpenCode ${sync.opencodeCount} 个 · Codex ${sync.codexCount} 个 · Claude Code 激活=${connected.claude.has ? connected.claude.base : '无'}`);
   human(`\n| 源 | 协议面 | 已写入 | 最近探针 |`);
   human(`|---|---|---|---|`);

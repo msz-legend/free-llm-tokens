@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>free-llm-tokens · 快速开始</title>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #f5f5f5; }
+    .diagram-container { width: 100%; overflow-x: auto; }
+    svg { width: 100%; min-width: 1080px; display: block; }
+    @media print { .diagram-container { overflow-x: visible; } svg { min-width: 0; } }
+  </style>
+</head>
+<body>
+  <div class="diagram-container">
+    <svg viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="xhs2-quickstart-title xhs2-quickstart-desc">
+      <title id="xhs2-quickstart-title">free-llm-tokens 快速开始三步</title>
+      <desc id="xhs2-quickstart-desc">按刷新、接入、验证三步接入免费模型源的命令速查卡，核心接入步骤高亮，附探针优先与自动备份说明。</desc>
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#4f5d75"/></marker>
+        <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#bf4520"/></marker>
+        <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#2e5aa8"/></marker>
+      </defs>
+
+      <rect width="100%" height="100%" fill="#f5f5f5"/>
+
+      <text x="64" y="92" fill="#4f5d75" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" letter-spacing="0.18em">QUICK START · THREE COMMANDS</text>
+      <text x="64" y="148" fill="#2d3142" font-size="44" font-family="'Instrument Serif', 'Microsoft YaHei', serif">三条命令接完三家工具</text>
+      <text x="64" y="184" fill="#4f5d75" font-size="16" font-family="'Geist', 'Microsoft YaHei', sans-serif">刷新清单 → 接入你最常用的那家 → 全链路验证</text>
+
+      <!-- arrows -->
+      <line x1="540" y1="432" x2="540" y2="472" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <line x1="540" y1="616" x2="540" y2="656" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+      <!-- step 1 -->
+      <rect x="152" y="272" width="776" height="144" rx="6" fill="rgba(45,49,66,0.05)" stroke="#4f5d75" stroke-width="1"/>
+      <rect x="184" y="296" width="52" height="16" rx="2" fill="transparent" stroke="rgba(79,93,117,0.40)" stroke-width="0.8"/>
+      <text x="210" y="307" fill="#4f5d75" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.08em">STEP 1</text>
+      <text x="252" y="312" fill="#2d3142" font-size="16" font-weight="600" font-family="'Geist', 'Microsoft YaHei', sans-serif">刷新今日免费清单</text>
+      <text x="240" y="368" fill="#2d3142" font-size="12" font-family="'Geist Mono', ui-monospace, monospace">node scripts/refresh.js</text>
+      <text x="240" y="392" fill="#5a6580" font-size="10" font-family="'Geist Mono', ui-monospace, monospace">feed 每日抓取 · 生产门槛筛选 · 写当日报告</text>
+
+      <!-- step 2（focal） -->
+      <rect x="152" y="488" width="776" height="144" rx="6" fill="rgba(191,69,32,0.08)"/>
+      <rect x="152" y="488" width="776" height="144" rx="6" fill="none" stroke="#bf4520" stroke-width="1.2"/>
+      <rect x="184" y="512" width="52" height="16" rx="2" fill="transparent" stroke="rgba(191,69,32,0.40)" stroke-width="0.8"/>
+      <text x="210" y="523" fill="#bf4520" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.08em">STEP 2</text>
+      <text x="252" y="528" fill="#2d3142" font-size="16" font-weight="600" font-family="'Geist', 'Microsoft YaHei', sans-serif">接入（探针通过才写入）</text>
+      <text x="240" y="584" fill="#2d3142" font-size="12" font-family="'Geist Mono', ui-monospace, monospace">node scripts/connect.js openrouter --harness opencode</text>
+      <text x="240" y="608" fill="#5a6580" font-size="10" font-family="'Geist Mono', ui-monospace, monospace">harness: opencode | codex | claude · key 你自己注册</text>
+
+      <!-- step 3 -->
+      <rect x="152" y="672" width="776" height="144" rx="6" fill="rgba(45,49,66,0.05)" stroke="#4f5d75" stroke-width="1"/>
+      <rect x="184" y="696" width="52" height="16" rx="2" fill="transparent" stroke="rgba(79,93,117,0.40)" stroke-width="0.8"/>
+      <text x="210" y="707" fill="#4f5d75" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.08em">STEP 3</text>
+      <text x="252" y="712" fill="#2d3142" font-size="16" font-weight="600" font-family="'Geist', 'Microsoft YaHei', sans-serif">五段全链路验证</text>
+      <text x="240" y="768" fill="#2d3142" font-size="12" font-family="'Geist Mono', ui-monospace, monospace">node scripts/test.js openrouter</text>
+      <text x="240" y="792" fill="#5a6580" font-size="10" font-family="'Geist Mono', ui-monospace, monospace">key → 目录 → completion → tool-call → 限速</text>
+
+      <!-- footer -->
+      <line x1="64" y1="888" x2="1016" y2="888" stroke="rgba(45,49,66,0.10)" stroke-width="0.8"/>
+      <text x="64" y="924" fill="#5a6580" font-size="12" font-family="'Geist', 'Microsoft YaHei', sans-serif">探针失败零写入 · 每次写入前自动备份到 ~/.free-llm-tokens/backups/ · 429 了随时换源切激活</text>
+      <text x="64" y="976" fill="#4f5d75" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" letter-spacing="0.14em">STATUS: node scripts/status.js · SWITCH: node scripts/switch.js &lt;id&gt;</text>
+    </svg>
+  </div>
+</body>
+</html>

@@ -4,7 +4,7 @@ export async function fetchJson(url, { timeoutMs = 10000, retries = 1, headers }
   for (let attempt = 0; attempt <= retries; attempt++) {
     try {
       const res = await fetch(url, {
-        headers: { accept: 'application/json', 'user-agent': 'free-models-skill/0.1 (+https://github.com)', ...(headers ?? {}) },
+        headers: { accept: 'application/json', 'user-agent': 'free-llm-tokens/0.1 (+https://github.com/msz-legend/free-llm-tokens)', ...(headers ?? {}) },
         signal: AbortSignal.timeout(timeoutMs),
       });
       if (res.status === 404) { const e = new Error(`404 not found: ${url}`); e.status = 404; throw e; }

@@ -1,5 +1,5 @@
 {
-  "$comment": "free-models L1 策展源注册表（2026-10-25 基于两轮联网核实）。gates 数值为官方/第三方已确认的量；标 'unverified' 的由 test.js 探针自动补测。caveats 为 connect 前事实卡必展示项。上游许可：本文为数据整理（各类事实/URL），引用层信息保留原出处。",
+  "$comment": "free-llm-tokens L1 策展源注册表（2026-10-25 基于两轮联网核实）。gates 数值为官方/第三方已确认的量；标 'unverified' 的由 test.js 探针自动补测。caveats 为 connect 前事实卡必展示项。上游许可：本文为数据整理（各类事实/URL），引用层信息保留原出处。",
   "sources": [
     {
       "id": "openrouter",

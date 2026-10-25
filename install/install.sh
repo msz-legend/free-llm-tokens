@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
-# install.sh — copy skills/free-models into each harness's skills dir (never touches key configs)
-# usage: ./install/install.sh [opencode,claude,codex|all]
+# install.sh — copy skills/free-llm-tokens into each agent's skills dir (never touches key configs)
+# usage: ./install/install.sh [agents,opencode,claude,codex|all]
 set -euo pipefail
-src="$(cd "$(dirname "$0")/.." && pwd)/skills/free-models"
+src="$(cd "$(dirname "$0")/.." && pwd)/skills/free-llm-tokens"
 [ -f "$src/SKILL.md" ] || { echo "SKILL.md not found at $src" >&2; exit 1; }
 h="${1:-all}"
 want() { [ "$h" = "all" ] || printf '%s' "$h" | tr ',' '\n' | grep -qx "$1"; }
-if want opencode; then mkdir -p "$HOME/.config/opencode/skills/free-models"; cp "$src/SKILL.md" "$HOME/.config/opencode/skills/free-models/SKILL.md"; echo "✅ opencode → ~/.config/opencode/skills/free-models"; fi
-if want claude;   then mkdir -p "$HOME/.claude/skills/free-models"; cp "$src/SKILL.md" "$HOME/.claude/skills/free-models/SKILL.md"; echo "✅ claude → ~/.claude/skills/free-models"; fi
-if want codex;    then mkdir -p "$HOME/.codex/prompts/free-models"; cp "$src/SKILL.md" "$HOME/.codex/prompts/free-models/SKILL.md"; echo "✅ codex → ~/.codex/prompts/free-models (no native skills; placed as prompt)"; fi
+if want agents;   then d="$HOME/.agents/skills/free-llm-tokens";        mkdir -p "$d"; cp "$src/SKILL.md" "$d/SKILL.md"; echo "✅ agents   → $d (AgentSkills universal dir)"; fi
+if want opencode; then d="$HOME/.config/opencode/skills/free-llm-tokens"; mkdir -p "$d"; cp "$src/SKILL.md" "$d/SKILL.md"; echo "✅ opencode → $d"; fi
+if want claude;   then d="$HOME/.claude/skills/free-llm-tokens";        mkdir -p "$d"; cp "$src/SKILL.md" "$d/SKILL.md"; echo "✅ claude   → $d"; fi
+if want codex;    then d="$HOME/.codex/prompts/free-llm-tokens";        mkdir -p "$d"; cp "$src/SKILL.md" "$d/SKILL.md"; echo "✅ codex    → $d (no native skills; placed as prompt)"; fi
 echo "Restart the harness session to load. Uninstall = delete the above dirs."

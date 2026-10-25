@@ -1,5 +1,5 @@
 {
-  "$comment": "free-models v1 校验规则。所有值为可配置默认，用户可改此文件。字段语义见 docs/README.zh.md#rules",
+  "$comment": "free-llm-tokens v1 校验规则。所有值为可配置默认，用户可改此文件。字段语义见 docs/README.zh.md#rules",
   "gates": {
     "$comment": "生产 coding 门槛（Q10 共识：tool-call 必须 + ctx>=128K + RPM>=15 + RPD>=50）",
     "ctxMin": 128000,

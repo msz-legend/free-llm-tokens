@@ -1,10 +1,10 @@
 ---
-name: free-models
-description: 把当日可用的官方免费档 LLM API 源（OpenRouter :free、智谱 GLM Flash、Z.AI、ModelScope、SiliconFlow、Gemini、Groq 等）接入本机的 OpenCode / OpenAI Codex / Claude Code 原生配置。触发词：免费模型、free tier、free models、白嫖、換源、换源、接个免费源、429 了、额度用完、切到免费、接入 provider、接 codex/claude/opencode 免费模型。Agent 必须遵守：非交互环境不得挂起等待输入——connect 一律显式传 --key（由用户提供）或提示用户改用真终端；每接入一个新 provider，先在对话里向用户确认隐私条款再执行。
+name: free-llm-tokens
+description: 把当日可用的官方免费档 LLM API Token 源（OpenRouter :free、智谱 GLM Flash、Z.AI、ModelScope、SiliconFlow、Gemini、Groq 等）接入本机各厂家 Agent 的原生配置（写入支持 OpenCode / OpenAI Codex / Claude Code；skill 本体可装进任何 AgentSkills 兼容 harness）。触发词：免费模型、免费 token、free tokens、free tier、free models、白嫖、换源、接个免费源、429 了、额度用完、切到免费、接入 provider。Agent 必须遵守：非交互环境不得挂起等待输入——connect 一律显式传 --key（由用户提供）或提示用户改用真终端；每接入一个新 provider，先在对话里向用户确认隐私条款再执行。
 license: MIT
 ---
 
-# free-models — 免费模型源注册表 + 三家 harness 自动接入
+# free-llm-tokens — 免费 LLM Token 源注册表 + 各厂家 Agent 自动接入
 
 **定位**：发现「今天可用」的官方免费档 LLM API（注册表 + 每日 feed），把你自己的 API key 接入
 OpenCode / OpenAI Codex / Claude Code 的**原生配置文件**。面向正经 coding 使用：

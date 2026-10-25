@@ -1,4 +1,4 @@
-# free-models
+# free-llm-tokens
 
 **A daily-refreshed registry of official free-tier LLM APIs, auto-connected into the native
 configs of OpenCode / OpenAI Codex / Claude Code.**

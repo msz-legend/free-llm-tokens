@@ -1,9 +1,28 @@
 {
-  "name": "free-models-skill",
-  "version": "0.1.0",
+  "name": "free-llm-tokens",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
   "license": "MIT",
-  "description": "free-models: daily-refreshed free-tier LLM sources registry, auto-connected into OpenCode / OpenAI Codex / Claude Code native configs. Zero npm dependencies.",
-  "engines": { "node": ">=20" }
+  "description": "free-llm-tokens: daily-refreshed registry of free LLM API tokens / free-tier sources, one-command connect into Claude Code / OpenAI Codex / OpenCode native configs. Zero npm dependencies.",
+  "keywords": [
+    "llm",
+    "free-tier",
+    "tokens",
+    "claude-code",
+    "codex",
+    "opencode",
+    "agent-skills",
+    "registry"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/msz-legend/free-llm-tokens.git"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node tests/sandbox-writers.mjs"
+  }
 }

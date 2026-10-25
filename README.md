@@ -1,6 +1,10 @@
-# free-models
+# free-llm-tokens
 
-**每日刷新的免费 LLM API 源注册表 + 一键接入 OpenCode / OpenAI Codex / Claude Code 原生配置。**
+[![ci](https://github.com/msz-legend/free-llm-tokens/actions/workflows/ci.yml/badge.svg)](https://github.com/msz-legend/free-llm-tokens/actions/workflows/ci.yml)
+[![daily-refresh](https://github.com/msz-legend/free-llm-tokens/actions/workflows/daily-refresh.yml/badge.svg)](https://github.com/msz-legend/free-llm-tokens/actions/workflows/daily-refresh.yml)
+[![license](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+
+**每日刷新的免费大模型 Token 源注册表 + 一键接入 OpenCode / OpenAI Codex / Claude Code 原生配置。**
 面向正经 coding 生产使用（tool-call 必须、长上下文、明确额度口径），零 npm 依赖，Node ≥20。
 
 > English version: [docs/README.md](docs/README.md) · [PRIVACY.md](docs/PRIVACY.md) · [LICENSE](LICENSE)
@@ -44,6 +48,30 @@ node scripts/test.js openrouter
 单激活位语义：OpenCode/Codex 用 `switch` 切默认；**Claude Code 的 env 块是单激活位**，
 `connect` 新源会覆写（自动备份，可回滚），`remove` 只在「本源是最后写入者」时才清 env。
 
+## 装进任意厂家的 Agent（可选）
+
+skill 本体符合 AgentSkills 标准，clone 后一键装进多家 harness 的 skills 目录（不碰任何 key 配置）：
+
+```powershell
+.\install\install.ps1                     # 默认装全部 4 个落点
+.\install\install.ps1 -Harnesses agents   # 只装 AgentSkills 通用标准目录
+```
+
+```bash
+./install/install.sh                      # macOS / Linux 同理
+```
+
+| 落点 | 谁在读 |
+|---|---|
+| `~/.agents/skills/free-llm-tokens` | AgentSkills 通用标准目录（多家 harness 通吃） |
+| `~/.config/opencode/skills/free-llm-tokens` | OpenCode |
+| `~/.claude/skills/free-llm-tokens` | Claude Code |
+| `~/.codex/prompts/free-llm-tokens` | OpenAI Codex（无原生 skills，放 prompts 作会话引用卡） |
+
+卸载 = 删除对应目录，重启 harness 生效。
+
+**兼容说明**：数据目录沿用 `~/.free-models`、环境变量沿用 `FREE_MODELS_*` 前缀、Codex 锚点注释沿用 `# free-models:begin/end`——与既有安装完全兼容，无需迁移。
+
 ## 收录边界
 
 **只收官方免费档**（你自己注册拿 key）+ 少数明确标注的 keyless 匿名源（Kilo/llm7/OVH，单独分类）。
@@ -72,12 +100,14 @@ node scripts/refresh.js
 ## 目录结构
 
 ```
-free-models/
-├── skills/free-models/SKILL.md    # 供 harness 加载的 skill 门面（触发词/路由/铁律）
+free-llm-tokens/
+├── skills/free-llm-tokens/SKILL.md    # 供 harness 加载的 skill 门面（触发词/路由/铁律）
 ├── scripts/                       # refresh / connect / test / status / switch / remove + lib/
 ├── registry/                      # sources.json（L1 策展） · rules.json（门槛） · upstream.json（feed 表）
 ├── docs/                          # English README · PRIVACY.md
 ├── install/                       # 安装脚本（win/.sh）：复制 skill 到各 harness skills 目录
+├── reports/                       # GitHub Actions 每日 refresh 产出的日报（reports/latest.md）
+├── promo/                         # 小红书宣传图（源 HTML + PNG）
 └── tests/sandbox-writers.mjs      # 沙箱写入器验收（临时 USERPROFILE，不碰真实配置）
 ```
 

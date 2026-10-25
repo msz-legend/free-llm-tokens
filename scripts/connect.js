@@ -149,7 +149,7 @@ async function main() {
       results.targets.claude = { ...r };
       human(`\n✅ Claude Code env 块已写入 ${r.file}${r.backup ? `（备份 ${path.basename(r.backup)}）` : ''}${model ? `（ANTHROPIC_MODEL=${model}）` : ''}`);
     } else if (h === 'codex') {
-      const r = writeCodexProvider(src.id, { name: `free-models · ${src.name}`, base: bases.codex, wireApi: 'responses', envKey: results.envName });
+      const r = writeCodexProvider(src.id, { name: `free-llm-tokens · ${src.name}`, base: bases.codex, wireApi: 'responses', envKey: results.envName });
       const ph = persistEnvVar(results.envName, key);
       results.targets.codex = { ...r, envName: results.envName, envPersisted: ph };
       human(`\n✅ Codex provider 已写入 ${r.file}（wire_api=responses；base=${bases.codex}）`);

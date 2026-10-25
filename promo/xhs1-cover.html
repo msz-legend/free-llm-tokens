@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>free-llm-tokens · 封面</title>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #f5f5f5; }
+    .diagram-container { width: 100%; overflow-x: auto; }
+    svg { width: 100%; min-width: 1080px; display: block; }
+    @media print { .diagram-container { overflow-x: visible; } svg { min-width: 0; } }
+  </style>
+</head>
+<body>
+  <div class="diagram-container">
+    <svg viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="xhs1-cover-title xhs1-cover-desc">
+      <title id="xhs1-cover-title">free-llm-tokens：免费 LLM 源接入三家编程工具</title>
+      <desc id="xhs1-cover-desc">展示四类免费 LLM 源经中央 hub（每日刷新、探针、写入）接入 OpenCode、Codex 与 Claude Code 的总览架构图。</desc>
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#4f5d75"/></marker>
+        <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#bf4520"/></marker>
+        <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#2e5aa8"/></marker>
+      </defs>
+
+      <rect width="100%" height="100%" fill="#f5f5f5"/>
+
+      <!-- header（画进 SVG，导出 PNG 时保留） -->
+      <text x="64" y="92" fill="#4f5d75" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" letter-spacing="0.18em">DAILY REFRESH · 2026-10-25</text>
+      <text x="64" y="148" fill="#2d3142" font-size="44" font-family="'Instrument Serif', 'Microsoft YaHei', serif">free-llm-tokens</text>
+      <text x="64" y="184" fill="#4f5d75" font-size="16" font-family="'Geist', 'Microsoft YaHei', sans-serif">每日刷新的免费 LLM API 源 · 一键接入三家编程工具</text>
+
+      <!-- zones（先画） -->
+      <rect x="64" y="332" width="280" height="472" rx="8" fill="rgba(45,49,66,0.02)" stroke="rgba(45,49,66,0.10)" stroke-width="0.8"/>
+      <rect x="132" y="336" width="144" height="12" rx="2" fill="#f5f5f5"/>
+      <text x="204" y="345" fill="#5a6580" font-size="7" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.14em">FREE SOURCES</text>
+
+      <rect x="736" y="332" width="280" height="472" rx="8" fill="rgba(45,49,66,0.02)" stroke="rgba(45,49,66,0.10)" stroke-width="0.8"/>
+      <rect x="808" y="336" width="136" height="12" rx="2" fill="#f5f5f5"/>
+      <text x="876" y="345" fill="#5a6580" font-size="7" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.14em">CODING TOOLS</text>
+
+      <!-- arrows（nodes 之前画） -->
+      <path d="M 320,436 H 374 Q 382,436 382,444 V 508 Q 382,516 390,516 H 444" fill="none" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <line x1="320" y1="580" x2="444" y2="580" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <path d="M 320,724 H 374 Q 382,724 382,716 V 652 Q 382,644 390,644 H 444" fill="none" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <path d="M 636,516 H 690 Q 698,516 698,508 V 444 Q 698,436 706,436 H 760" fill="none" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <line x1="636" y1="580" x2="760" y2="580" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <path d="M 636,644 H 690 Q 698,644 698,652 V 716 Q 698,724 706,724 H 760" fill="none" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+      <!-- hub node（focal · accent） -->
+      <rect x="444" y="500" width="192" height="160" rx="6" fill="rgba(191,69,32,0.08)"/>
+      <rect x="444" y="500" width="192" height="160" rx="6" fill="none" stroke="#bf4520" stroke-width="1.2"/>
+      <text x="540" y="560" fill="#2d3142" font-size="18" font-weight="600" font-family="'Geist', 'Microsoft YaHei', sans-serif" text-anchor="middle">free-llm-tokens</text>
+      <text x="540" y="586" fill="#bf4520" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.08em">LOCAL HUB</text>
+      <text x="540" y="608" fill="#4f5d75" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">refresh · connect · test</text>
+
+      <!-- source nodes -->
+      <rect x="88" y="380" width="232" height="112" rx="6" fill="rgba(45,49,66,0.05)" stroke="#4f5d75" stroke-width="1"/>
+      <text x="204" y="428" fill="#2d3142" font-size="16" font-weight="600" font-family="'Geist', 'Microsoft YaHei', sans-serif" text-anchor="middle">OpenRouter</text>
+      <text x="204" y="452" fill="#4f5d75" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">13 :free · weekly set</text>
+
+      <rect x="88" y="524" width="232" height="112" rx="6" fill="rgba(45,49,66,0.05)" stroke="#4f5d75" stroke-width="1"/>
+      <text x="204" y="572" fill="#2d3142" font-size="16" font-weight="600" font-family="'Geist', 'Microsoft YaHei', sans-serif" text-anchor="middle">BigModel</text>
+      <text x="204" y="596" fill="#4f5d75" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">GLM-4.7-Flash · cn-direct</text>
+
+      <rect x="88" y="668" width="232" height="112" rx="6" fill="rgba(45,49,66,0.05)" stroke="#4f5d75" stroke-width="1"/>
+      <text x="204" y="716" fill="#2d3142" font-size="16" font-weight="600" font-family="'Geist', 'Microsoft YaHei', sans-serif" text-anchor="middle">Kilo</text>
+      <text x="204" y="740" fill="#4f5d75" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">keyless · 200 req/h</text>
+
+      <!-- harness nodes -->
+      <rect x="760" y="380" width="232" height="112" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+      <text x="876" y="428" fill="#2d3142" font-size="16" font-weight="600" font-family="'Geist', 'Microsoft YaHei', sans-serif" text-anchor="middle">OpenCode</text>
+      <text x="876" y="452" fill="#4f5d75" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">provider.free-id</text>
+
+      <rect x="760" y="524" width="232" height="112" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+      <text x="876" y="572" fill="#2d3142" font-size="16" font-weight="600" font-family="'Geist', 'Microsoft YaHei', sans-serif" text-anchor="middle">OpenAI Codex</text>
+      <text x="876" y="596" fill="#4f5d75" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">model_providers.free-id</text>
+
+      <rect x="760" y="668" width="232" height="112" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+      <text x="876" y="716" fill="#2d3142" font-size="16" font-weight="600" font-family="'Geist', 'Microsoft YaHei', sans-serif" text-anchor="middle">Claude Code</text>
+      <text x="876" y="740" fill="#4f5d75" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">settings.env · ANTHROPIC_*</text>
+
+      <!-- footer -->
+      <line x1="64" y1="952" x2="1016" y2="952" stroke="rgba(45,49,66,0.10)" stroke-width="0.8"/>
+      <text x="64" y="984" fill="#4f5d75" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" letter-spacing="0.14em">PROBE-FIRST · AUTO-BACKUP · ZERO NPM DEPS · NODE ≥ 20</text>
+      <text x="64" y="1016" fill="#5a6580" font-size="12" font-family="'Geist', 'Microsoft YaHei', sans-serif">探针优先：验证通过才写入你的配置，写前自动备份</text>
+    </svg>
+  </div>
+</body>
+</html>

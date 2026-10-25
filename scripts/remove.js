@@ -53,7 +53,7 @@ async function main() {
         text = text.replace(re, '');
         // 顶层激活行指向本 provider 的：整行注释保留历史（其它 provider 的激活行不动）
         const actRe = new RegExp(`^\\s*model_provider\\s*=\\s*["']${id}["']?\\s*(#.*)?$`);
-        const lines = text.split(/\r?\n/).map((line) => (actRe.test(line) ? `# [free-models removed] ${line.trim()}` : line));
+        const lines = text.split(/\r?\n/).map((line) => (actRe.test(line) ? `# [free-llm-tokens removed] ${line.trim()}` : line));
         fs.writeFileSync(file, lines.join('\n'), 'utf8');
         removed.codex = true;
         human(`✅ Codex：已移除 ${id} 段（备份 ${bak ? path.basename(bak) : '无'}；激活行已注释，请重选默认 provider）`);

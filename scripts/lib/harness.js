@@ -37,7 +37,7 @@ export function writeOpencode(source, { base, key, models, meta }) {
   cfg.provider[pid(source.id)] = {
     npm: '@ai-sdk/openai-compatible',
     name: `free-models · ${source.name}`,
-    options: { baseURL: base, apiKey: key },
+    options: { baseURL: base, ...(key ? { apiKey: key } : {}) },
     ...(models && Object.keys(models).length ? { models } : {}),
     ...(meta ? { _free_models_meta: meta } : {}),
   };

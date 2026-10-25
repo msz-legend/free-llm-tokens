@@ -19,7 +19,8 @@ function argStr(name, def = null) {
   return i >= 0 && process.argv[i + 1] ? process.argv[i + 1] : def;
 }
 
-async function resolveKey(sourceId) {
+async function resolveKey(sourceId, src) {
+  if (src.categories?.includes('keyless')) return { key: null, how: 'keyless（匿名源，无需 key）' };
   const argvKey = argStr('--key');
   if (argvKey) return { key: argvKey, how: 'arg' };
   const envName = envKeyName(sourceId);
@@ -79,7 +80,7 @@ async function main() {
     if (!/^y(es)?$/i.test(a.trim())) { human('已取消'); process.exit(0); }
   }
 
-  const { key } = await resolveKey(sourceId);
+  const { key } = await resolveKey(sourceId, src);
   const p = supportedProtocolsFor(src);
   const bases = {
     opencode: p.openai,
@@ -103,7 +104,7 @@ async function main() {
     }
     if (targets.some((t) => t !== 'claude') && bases.opencode) {
       const km = await probeKeyModels(p.openai, key);
-      probe.keyModels = { ok: km.ok, status: km.status, count: km.count };
+      probe.keyModels = { ok: km.ok, status: km.status, count: km.count, ids: km.ids ?? [] };
       human(`  GET /models → ${km.ok ? `OK（${km.count} 个模型）` : `FAIL ${km.status}`}`);
       if (km.ok && !model) model = km.ids.find((i) => /flash|mini|small|free/i.test(i)) ?? km.ids[0] ?? null;
       if (!model && (src.models?.strategy === 'live')) model = 'openrouter/free';
@@ -131,8 +132,13 @@ async function main() {
         const gp = gateParams(loadRules());
         for (const m of (cache.openrouter?.free ?? []).filter((x) => (x.ctx ?? 0) >= gp.ctxMin && x.toolcall !== false).slice(0, 12)) models[m.id] = { name: m.name };
         models['openrouter/free'] ??= { name: 'Free Models Router（兑底）' };
-      } else for (const id of src.models?.ids ?? []) models[id] = { name: id };
-      const r = writeOpencode(src, { base: bases.opencode, key, models, meta: { connectedAt: new Date().toISOString(), sourceId } });
+      } else if (src.models?.ids?.length) {
+        for (const id of src.models.ids) models[id] = { name: id };
+      } else if (probe.keyModels?.ids?.length) {
+        // dynamic 源：用探针拿到的 live 目录前 8 个充模型面
+        for (const id of probe.keyModels.ids.slice(0, 8)) models[id] = { name: id };
+      }
+      const r = writeOpencode(src, { base: bases.opencode, key, models, meta: { connectedAt: new Date().toISOString(), sourceId, keyless: key === null } });
       results.targets.opencode = { ...r, models: Object.keys(models) };
       human(`\n✅ OpenCode 已写入 ${r.file}${r.backup ? `（备份 ${path.basename(r.backup)}）` : ''}，模型 ${Object.keys(models).length} 个`);
     } else if (h === 'claude') {

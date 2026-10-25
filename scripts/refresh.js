@@ -3,7 +3,7 @@
 // 用法：node scripts/refresh.js [--json] [--no-openrouter] [--no-mnfst] [--quick]
 // 代理：PowerShell 先 set NODE_USE_ENV_PROXY=1 与 $env:HTTPS_PROXY（详见 docs）
 import path from 'node:path';
-import { ensureStatedir, readJson, writeJson, STATE, STATE_DIR, todayStamp } from './lib/util.js';
+import { ensureStatedir, readJson, writeJson, STATE, STATE_DIR, todayStamp, endWith } from './lib/util.js';
 import { loadSources, loadRules, loadUpstream, gateParams } from './lib/registry.js';
 import { fetchJson } from './lib/feed.js';
 
@@ -85,7 +85,7 @@ async function main() {
   const cache = { ...prev, sources: { ...prev.sources }, summaries: prev.summaries ?? [] };
   const or = results.feeds['openrouter-live'];
   if (or?.ok) {
-    const prevIds = (prev.sources?.openrouter?.freeIds ?? prev.openrouter?.freeIds ?? []).map((x) => x.id ?? x);
+    const prevIds = (prev.openrouter?.free ?? []).map((m) => m?.id ?? m); // 与写入键一致：cache.openrouter.free
     const newIds = or.free.map((m) => m.id);
     results.additions = newIds.filter((id) => !prevIds.includes(id)).slice(0, 40);
     results.removals = prevIds.filter((id) => !newIds.includes(id)).slice(0, 40);
@@ -156,4 +156,4 @@ async function main() {
   }
 }
 
-main().catch((e) => { console.error('[refresh] fatal:', e.message); process.exit(1); });
+main().catch((e) => endWith(e, '[refresh]'));

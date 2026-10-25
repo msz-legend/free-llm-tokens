@@ -9,7 +9,7 @@ import process from 'node:process';
 import { loadSources, loadRules, gateParams } from './lib/registry.js';
 import { supportedProtocolsFor, pid, envKeyName, writeOpencode, writeClaude, writeCodexProvider, codexActivate, persistEnvVar, readClaudeActive } from './lib/harness.js';
 import { probeCompletion, probeAnthropic, probeKeyModels, probeToolCall } from './lib/probe.js';
-import { ask, readJson, writeJson, STATE_DIR, hasFlag, todayStamp } from './lib/util.js';
+import { ask, readJson, writeJson, STATE_DIR, hasFlag, todayStamp, fatal, endWith } from './lib/util.js';
 
 const CONNECTED_FILE = path.join(STATE_DIR, 'connected.json');
 
@@ -29,8 +29,8 @@ async function resolveKey(sourceId, src) {
   human(`🔑 输入 key 后回车（只写入 harness 原生配置，skill 不建第二份副本库）→ 环境变量名：${envName}`);
   let key;
   try { key = await ask('> '); }
-  catch (e) { console.error(`[connect] ${e.message}。示例：node scripts/connect.js ${sourceId} --key <key> --harness …`); process.exit(2); }
-  if (!key.trim()) { console.error('[connect] 未收到 key，退出'); process.exit(2); }
+  catch (e) { throw fatal(`${e.message}。示例：node scripts/connect.js ${sourceId} --key <key> --harness …`, 2); }
+  if (!key?.trim()) { throw fatal('未收到 key，退出', 2); }
   return { key: key.trim(), how: 'prompt' };
 }
 
@@ -56,15 +56,14 @@ async function main() {
   const sourceId = process.argv[2];
   const src = loadSources().find((s) => s.id === sourceId);
   if (!src) {
-    console.error(`[connect] 未知 sourceId：${sourceId}；可用：${loadSources().filter((s) => !s.categories.includes('harness-attached')).map((s) => s.id).join(', ')}`);
-    process.exit(2);
+    throw fatal(`未知 sourceId：${sourceId}；可用：${loadSources().filter((s) => !s.categories.includes('harness-attached')).map((s) => s.id).join(', ')}`, 2);
   }
 
   const eligible = eligibleHarnesses(src);
   let wanted = argStr('--harness', 'auto');
   if (wanted === 'auto') wanted = eligible.length === 1 ? eligible[0] : eligible.join(',');
   const targets = pickTargets(wanted, sourceId, eligible, human);
-  if (!targets.length) { console.error('[connect] 无可写目标 harness，退出'); process.exit(2); }
+  if (!targets.length) { throw fatal('无可写目标 harness，退出', 2); }
 
   // 隐私确认（每个 provider 首次确认一次，之后不重复）
   const connected = readJson(CONNECTED_FILE, { confirmed: [], records: [] });
@@ -76,8 +75,8 @@ async function main() {
   if (!confirmedBefore && !hasFlag('--yes')) {
     let a;
     try { a = await ask('确认接入？(y/N) '); }
-    catch { console.error('[connect] 隐私确认需要交互终端；非交互环境请显式加 --yes'); process.exit(2); }
-    if (!/^y(es)?$/i.test(a.trim())) { human('已取消'); process.exit(0); }
+    catch { throw fatal('隐私确认需要交互终端；非交互环境请显式加 --yes', 2); }
+    if (!/^y(es)?$/i.test(a.trim())) { human('已取消'); return; }
   }
 
   const { key } = await resolveKey(sourceId, src);
@@ -99,21 +98,21 @@ async function main() {
       human(`  anthropic /v1/messages → ${pa.ok ? `OK ${pa.ms}ms` : `FAIL ${pa.status}${pa.err ? '：' + pa.err : ''}`}`);
       if (!pa.ok && src.id === 'bigmodel') human('  → 智谱免费 Flash 走 Anthropic 端点未经官方背书；失败属已知免责路径，建议主路径用 OpenCode(openai)。');
       if (!pa.ok && targets.length === 1 && targets[0] === 'claude' && !hasFlag('--force')) {
-        console.error('[connect] Anthropic 探针失败，未写入配置（可用 --force 强制）。'); process.exit(1);
+        throw fatal('Anthropic 探针失败，未写入配置（可用 --force 强制）。', 1);
       }
     }
     if (targets.some((t) => t !== 'claude') && bases.opencode) {
       const km = await probeKeyModels(p.openai, key);
       probe.keyModels = { ok: km.ok, status: km.status, count: km.count, ids: km.ids ?? [] };
       human(`  GET /models → ${km.ok ? `OK（${km.count} 个模型）` : `FAIL ${km.status}`}`);
-      if (km.ok && !model) model = km.ids.find((i) => /flash|mini|small|free/i.test(i)) ?? km.ids[0] ?? null;
+      if (km.ok && !model) model = km.ids.find((i) => /:free$/i.test(i) && !/^kilo-auto\//.test(i)) ?? km.ids.find((i) => /flash|mini|small/i.test(i)) ?? km.ids[0] ?? null;
       if (!model && (src.models?.strategy === 'live')) model = 'openrouter/free';
-      if (probe.keyModels.ok && !probe.keyModels.count && !hasFlag('--force')) { console.error('[connect] 目录空（key 可能无效或无免费模型），退出'); process.exit(1); }
+      if (probe.keyModels.ok && !probe.keyModels.count && !hasFlag('--force')) { throw fatal('目录空（key 可能无效或无免费模型），退出', 1); }
       if (model && bases.opencode) {
         const pc = await probeCompletion(bases.opencode, key, model);
         probe.completion = { ok: pc.ok, status: pc.status, ms: pc.ms, verdict: (pc.text ?? pc.err ?? '').slice(0, 60) };
         human(`  chat completion（${model}） → ${pc.ok ? `OK ${pc.ms}ms · ${JSON.stringify(pc.text).slice(0, 60)}` : `FAIL ${pc.status}${pc.err ? '：' + pc.err : ''}`}`);
-        if (!pc.ok && !hasFlag('--force')) { console.error('[connect] 模型探针失败，未写入配置（--force 强制 / --skip-probe 跳过 / --model 换模型）'); process.exit(1); }
+        if (!pc.ok && !hasFlag('--force')) { throw fatal('模型探针失败，未写入配置（--force 强制 / --skip-probe 跳过 / --model 换模型）', 1); }
         const pt = await probeToolCall(bases.opencode, key, model);
         probe.toolcall = { ok: pt.ok, verdict: pt.verdict, ms: pt.ms };
         human(`  tool-call → ${pt.verdict}（${pt.ms}ms）`);
@@ -135,8 +134,10 @@ async function main() {
       } else if (src.models?.ids?.length) {
         for (const id of src.models.ids) models[id] = { name: id };
       } else if (probe.keyModels?.ids?.length) {
-        // dynamic 源：用探针拿到的 live 目录前 8 个充模型面
-        for (const id of probe.keyModels.ids.slice(0, 8)) models[id] = { name: id };
+        // dynamic 源：探针 live 目录；:free 优先（需登录的 auto 路由除外）
+        const ids = probe.keyModels.ids;
+        const freeIds = ids.filter((i) => /:free$/i.test(i) && !/^kilo-auto\//.test(i));
+        for (const id of (freeIds.length ? freeIds : ids).slice(0, 8)) models[id] = { name: id };
       }
       const r = writeOpencode(src, { base: bases.opencode, key, models, meta: { connectedAt: new Date().toISOString(), sourceId, keyless: key === null } });
       results.targets.opencode = { ...r, models: Object.keys(models) };
@@ -168,4 +169,4 @@ async function main() {
   if (hasFlag('--json')) console.log(JSON.stringify(results, null, 2));
 }
 
-main().catch((e) => { console.error('[connect] fatal:', e?.message ?? e, e?.cause?.code ? `(${e.cause.code})` : ''); process.exit(1); });
+main().catch((e) => endWith(e, '[connect]'));

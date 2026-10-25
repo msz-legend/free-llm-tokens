@@ -20,7 +20,11 @@ export function ensureStatedir() {
 
 export function readJson(file, fallback) {
   try {
-    if (fs.existsSync(file)) return JSON.parse(fs.readFileSync(file, 'utf8'));
+    if (fs.existsSync(file)) {
+      let text = fs.readFileSync(file, 'utf8');
+      if (text.charCodeAt(0) === 0xfeff) text = text.slice(1); // PowerShell BOM 免疫
+      return JSON.parse(text);
+    }
   } catch (e) {
     console.error(`[free-models] ${file} 解析失败（${e.message}）——请手动修复或删除后重试`);
     process.exitCode = 2;
@@ -64,3 +68,14 @@ export async function ask(question) {
   const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
   return rl.question(question).finally(() => rl.close());
 }
+
+/** 可控失败：替代 process.exit（避免与未关闭 socket 触发 libuv 断言崩溃） */
+export class Fatal extends Error {
+  constructor(message, code = 1) { super(message); this.name = 'Fatal'; this.exitCode = code; }
+}
+export function fatal(msg, code = 1) { throw new Fatal(msg, code); }
+export const endWith = (e, tag = '[free-models]') => {
+  const code = e?.exitCode ?? 1;
+  console.error(`${tag} ${e?.message ?? e}`);
+  process.exitCode = code;
+};

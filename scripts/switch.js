@@ -5,7 +5,7 @@ import path from 'node:path';
 import process from 'node:process';
 import { loadSources } from './lib/registry.js';
 import { pid, opencodeDefaultModel, codexActivate, readCodexBlocks, CONFIG_PATHS } from './lib/harness.js';
-import { readJson, writeJson, STATE_DIR, hasFlag } from './lib/util.js';
+import { readJson, writeJson, STATE_DIR, hasFlag, fatal, endWith } from './lib/util.js';
 
 const human = (m) => { if (!hasFlag('--json')) console.log(m); };
 function argStr(name, def = null) {
@@ -16,7 +16,7 @@ function argStr(name, def = null) {
 async function main() {
   const sourceId = process.argv[2];
   const src = loadSources().find((s) => s.id === sourceId);
-  if (!src) { console.error(`[switch] 未知源：${sourceId}`); process.exit(2); }
+  if (!src) { throw fatal(`未知源：${sourceId}`, 2); }
   const hi = argStr('--harness', 'opencode,codex');
   const model = argStr('--model') ?? src.models?.ids?.[0] ?? null;
   const results = {};
@@ -46,4 +46,4 @@ async function main() {
   if (hasFlag('--json')) console.log(JSON.stringify(results, null, 2));
 }
 
-main().catch((e) => { console.error('[switch] fatal:', e?.message ?? e); process.exit(1); });
+main().catch((e) => endWith(e, '[switch]'));

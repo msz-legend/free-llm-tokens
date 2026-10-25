@@ -6,7 +6,7 @@ import path from 'node:path';
 import process from 'node:process';
 import { loadSources } from './lib/registry.js';
 import { pid, envKeyName, CONFIG_PATHS } from './lib/harness.js';
-import { ask, readJson, writeJson, STATE_DIR, hasFlag, backupFile } from './lib/util.js';
+import { ask, readJson, writeJson, STATE_DIR, hasFlag, backupFile, fatal, endWith } from './lib/util.js';
 
 const human = (m) => { if (!hasFlag('--json')) console.log(m); };
 function argStr(name, def = null) {
@@ -17,7 +17,7 @@ function argStr(name, def = null) {
 async function main() {
   const sourceId = process.argv[2];
   const src = loadSources().find((s) => s.id === sourceId);
-  if (!src) { console.error(`[remove] 未知源：${sourceId}`); process.exit(2); }
+  if (!src) { throw fatal(`未知源：${sourceId}`, 2); }
   const id = pid(sourceId);
 
   const hi = argStr('--harness', 'all');
@@ -26,8 +26,8 @@ async function main() {
   if (!hasFlag('--yes')) {
     let a;
     try { a = await ask(`确认从 ${harnesses.join('/')} 移除 ${src.name}? (y/N) `); }
-    catch { console.error('[remove] 需要交互确认；非交互环境请显式加 --yes'); process.exit(2); }
-    if (!/^y(es)?$/i.test(a.trim())) { human('已取消'); process.exit(0); }
+    catch { throw fatal('需要交互确认；非交互环境请显式加 --yes', 2); }
+    if (!/^y(es)?$/i.test(a.trim())) { human('已取消'); return; }
   }
   const removed = {};
 
@@ -92,4 +92,4 @@ async function main() {
   human(`\n✅ 移除完成（${Object.entries(removed).filter(([, v]) => v).map(([k]) => k).join(',') || '无实际写入'}）。探针徽章已清。`);
 }
 
-main().catch((e) => { console.error('[remove] fatal:', e?.message ?? e); process.exit(1); });
+main().catch((e) => endWith(e, '[remove]'));

@@ -153,13 +153,10 @@
       "categories": ["keyless"],
       "access": "unknown",
       "signup": "无需注册；key 不需要",
-      "endpoints": {
-        "openai": "https://ai-gateway.kilo.ai/api/v1",
-        "anthropic": { "base": "https://api.kilo.ai/api/gateway", "note": "隐性端点（官方未公开记载，2026-10 第三方实测 /v1/messages 返回 Anthropic 格式）" }
-      },
-      "gates": { "ctx": "per-model", "rpm": "unverified", "rph": 200, "toolcall": true, "verified": "2026-10-13 第三方实测" },
-      "models": { "strategy": "dynamic", "note": "~17 个免费池模型（Nemotron 3、poolside laguna、openrouter/free 等），catalog 会滞后" },
-      "caveats": [":free 免费池可能是其它免费池的中转，可能落到记录数据的 provider（官方文档自认）→ agent 用途接入需额外确认（中转类）", "匿名按 IP 限 200 req/h"]
+      "endpoints": { "openai": "https://ai-gateway.kilo.ai/api/v1" },
+      "gates": { "ctx": "per-model", "rpm": "unverified", "rph": 200, "toolcall": true, "verified": "2026-10-25 本地实测" },
+      "models": { "strategy": "dynamic", "note": "池内 :free 模型匿名可用（2026-10-25 本地实测 poolside/nemotron/flint/xingchen 均 200）；kilo-auto/free 路由需登录（401）" },
+      "caveats": [":free 免费池可能是其它免费池的中转，可能落到记录数据的 provider（官方文档自认）→ agent 用途接入需额外确认（中转类）", "匿名按 IP 限 200 req/h", "2026-10-25 本地实测：/v1/messages 匿名 401 → 此前第三方的'隐性 Anthropic 端点'结论对匿名不可复现；keyless 场景 claude path 不可用"]
     },
     {
       "id": "llm7",

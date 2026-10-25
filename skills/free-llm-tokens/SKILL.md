@@ -33,6 +33,7 @@ node "$S/scripts/status.js"
 ```
 
 - 在**仓库 checkout** 里直接用时，`$S` = 仓库根目录（`scripts/`、`registry/` 就在根下），路径同理可用。
+- **Hermes** 的落点是 `$HERMES_HOME/skills/free-llm-tokens`（Windows 安装版默认 `%LOCALAPPDATA%\hermes\skills\free-llm-tokens`）。
 - 若 `$S/scripts/refresh.js` 不存在，说明安装不完整（旧版安装器只拷了 SKILL.md）——重跑 `install/install.ps1` 或 `install/install.sh`，会连 `scripts/`、`registry/`、`docs/` 一起装。
 
 ## 子命令（`$S/scripts/`，Node ≥20，零 npm 依赖）

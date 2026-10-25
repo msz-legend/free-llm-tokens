@@ -53,7 +53,7 @@ node scripts/test.js openrouter
 skill 本体符合 AgentSkills 标准，clone 后一键装进多家 harness 的 skills 目录（不碰任何 key 配置）：
 
 ```powershell
-.\install\install.ps1                     # 默认装全部 4 个落点
+.\install\install.ps1                     # 默认装全部 5 个落点
 .\install\install.ps1 -Harnesses agents   # 只装 AgentSkills 通用标准目录
 ```
 
@@ -67,6 +67,7 @@ skill 本体符合 AgentSkills 标准，clone 后一键装进多家 harness 的 
 | `~/.config/opencode/skills/free-llm-tokens` | OpenCode |
 | `~/.claude/skills/free-llm-tokens` | Claude Code |
 | `~/.codex/prompts/free-llm-tokens` | OpenAI Codex（无原生 skills，放 prompts 作会话引用卡） |
+| `$HERMES_HOME/skills/free-llm-tokens` | Hermes Agent（默认 `~/.hermes/skills`；Windows 安装版实际是 `%LOCALAPPDATA%\hermes\skills`，安装器会自动识别） |
 
 每个落点都拷入**完整运行时**（`SKILL.md` + `scripts/` + `registry/` + `docs/`），装完即可直接跑，不依赖仓库路径；安装器自带完整性自检，缺文件会直接报错。装完可以这样验一下：
 

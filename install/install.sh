@@ -24,5 +24,11 @@ if want agents;   then install_one agents   "$HOME/.agents/skills/free-llm-token
 if want opencode; then install_one opencode "$HOME/.config/opencode/skills/free-llm-tokens"; fi
 if want claude;   then install_one claude   "$HOME/.claude/skills/free-llm-tokens"; fi
 if want codex;    then install_one codex    "$HOME/.codex/prompts/free-llm-tokens"; fi
+if want hermes;   then
+  # Hermes home: $HERMES_HOME → ~/.hermes (Windows GUI 版实际在 %LOCALAPPDATA%\hermes)
+  hermes_home="${HERMES_HOME:-}"
+  [ -n "$hermes_home" ] || hermes_home="$HOME/.hermes"
+  install_one hermes "$hermes_home/skills/free-llm-tokens"
+fi
 echo 'Self-check: node "$HOME/.agents/skills/free-llm-tokens/scripts/status.js"'
 echo "Restart the harness session to load. Uninstall = delete the above dirs."

@@ -43,7 +43,8 @@
       "caveats": [
         "2026-10-16 起标准 API key 与 Coding Plan key 分类管理、互不通用：本源只用标准 key（按量计费账户的免费模型 ¥0）",
         "Anthropic 端点在标准 key 下实测可通（2026-10-25，glm-4.7-flash 200 OK）；免费档走该协议仍属未经官方背书路径，官方文档只给 Coding Plan 场景",
-        "响应 content 偶为空串（glm-4.7-flash 思考型输出），tool-call 正常"
+        "响应 content 偶为空串（glm-4.7-flash 思考型输出），tool-call 正常",
+        "上游饱和可表现为 529 [1305]「访问量过大」或长延迟；免费档常态，稍候重试即可，与 key 有效性无关"
       ],
       "upstream": ["mnfst-data", "manual"]
     },

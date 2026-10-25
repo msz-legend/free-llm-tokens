@@ -1,0 +1,220 @@
+{
+  "$comment": "free-models L1 策展源注册表（2026-10-25 基于两轮联网核实）。gates 数值为官方/第三方已确认的量；标 'unverified' 的由 test.js 探针自动补测。caveats 为 connect 前事实卡必展示项。上游许可：本文为数据整理（各类事实/URL），引用层信息保留原出处。",
+  "sources": [
+    {
+      "id": "openrouter",
+      "name": "OpenRouter（:free 模型）",
+      "categories": ["keyed"],
+      "access": "proxy",
+      "signup": "https://openrouter.ai/keys（邮箱注册，免信用卡；一次充值 ≥$10 可将 RPD 50 提升至 1000）",
+      "endpoints": {
+        "openai": "https://openrouter.ai/api/v1",
+        "anthropic": {
+          "base": "https://openrouter.ai/api",
+          "note": "Anthropic Skin：/v1/messages 对非自家模型可用（2026-09 社区逐字验证 free 模型 OK）；Claude Code 接入还须 ANTHROPIC_API_KEY 置为空字符串（官方集成指南）"
+        }
+      },
+      "gates": { "ctx": "per-model", "rpm": 20, "rpd": 50, "toolcall": true, "verified": "官方 numbers" },
+      "models": { "strategy": "live", "fallbackIds": ["openrouter/free"] },
+      "caveats": [
+        ":free 模型集按周变动，以 live 目录为准",
+        "账户余额为负时连免费模型一并 429/402 屏蔽（最常见意外失败源）",
+        "免费档上游 provider 可选择记录 prompt 用于训练（直接进隐私确认文案）",
+        "上游饱和时出现独立 429（与限速无关的重试场景）"
+      ],
+      "upstream": ["openrouter-live", "mnfst-data"]
+    },
+    {
+      "id": "bigmodel",
+      "name": "智谱 BigModel（GLM 免费档）",
+      "categories": ["keyed"],
+      "access": "cn-direct",
+      "signup": "https://open.bigmodel.cn（手机号注册；chat API 不强制实名，海外手机号可注册）",
+      "endpoints": {
+        "openai": "https://open.bigmodel.cn/api/paas/v4",
+        "responses": "https://open.bigmodel.cn/api/v1",
+        "anthropic": {
+          "base": "https://open.bigmodel.cn/api/anthropic",
+          "note": "URL 官方确认；免费 Flash 走此端点未经官方背书（2026-10-16 起 key 分类管理，从无套餐账号走标准计费）→ test.js 实测；失败自动降级 openai 主路径"
+        }
+      },
+      "gates": { "ctx": 200000, "rpm": "限速口径：1 并发（mnfst 2026-10-23）", "rpd": "unverified", "toolcall": true, "verified": "2026-10-25" },
+      "models": { "strategy": "static", "ids": ["glm-4.7-flash"], "note": "GLM-4.5-Flash 已公告下线，改用 4.7；另有视觉 GLM-4.6V-Flash 免费档" },
+      "caveats": [
+        "2026-10-16 起标准 API key 与 Coding Plan key 分类管理、互不通用：本源只用标准 key（按量计费账户的免费模型 ¥0）",
+        "Anthropic 端点绑定 Coding Plan 语义，免费档走该协议属未经官方背书路径"
+      ],
+      "upstream": ["mnfst-data", "manual"]
+    },
+    {
+      "id": "zai",
+      "name": "Z.AI（智谱国际站）",
+      "categories": ["keyed"],
+      "access": "unknown",
+      "signup": "https://z.ai",
+      "endpoints": {
+        "openai": "https://api.z.ai/api/paas/v4",
+        "responses": "https://api.z.ai/api/v1",
+        "anthropic": {
+          "base": "https://api.z.ai/api/anthropic",
+          "note": "官方文档归 Coding Plan 场景；免费资源走余额需从未购套餐且账号加白（官方 FAQ 口径）→ 实测后另行标注"
+        }
+      },
+      "gates": { "ctx": 200000, "rpm": "unverified", "rpd": "unverified", "toolcall": true, "verified": "部分 2026-10-25" },
+      "models": { "strategy": "static", "ids": ["glm-4.7-flash"] },
+      "caveats": ["Codex 直连候选（官方 Responses 端点）；免费档经 Responses 端点可用性须探针确认", "加白要求可能让 Anthropic 路径不可用"]
+    },
+    {
+      "id": "modelscope",
+      "name": "ModelScope 魔搭（阿里云）",
+      "categories": ["keyed"],
+      "access": "cn-direct",
+      "signup": "https://modelscope.cn（阿里云账号绑定 + 实名；仅大陆可用）",
+      "endpoints": {
+        "openai": "https://api-inference.modelscope.cn/v1",
+        "anthropic": { "base": "https://api-inference.modelscope.cn", "note": "第三方实探可用（partial：部分模型 system prompt 有怪癖）；官方文档站未公开记载 → 实测标注" }
+      },
+      "gates": { "ctx": "per-model", "rpm": "unverified", "rpd": 2000, "toolcall": true, "verified": "2026-10-25" },
+      "models": { "strategy": "dynamic", "note": "免费计划为账号级 2000 请求/日、单模型 ≤500 请求/日；ms- 前缀 key 需原样保留" },
+      "caveats": ["单模型 500/日：agent 重活一日易顶格 → 事实卡标'轻用'", "鉴权 Bearer ms-xxx"]
+    },
+    {
+      "id": "siliconflow",
+      "name": "SiliconFlow 硅基流动",
+      "categories": ["keyed"],
+      "access": "cn-direct",
+      "signup": "https://siliconflow.cn（2026-05-15 起免费模型需实名认证，国际用户联系客服）",
+      "endpoints": {
+        "openai": "https://api.siliconflow.cn/v1",
+        "anthropic": { "base": "https://api.siliconflow.com", "note": "官方 /v1/messages 存在但模型枚举受限，未见免费 GLM/Qwen 档 → 默认不作为 CC 主路径" }
+      },
+      "gates": { "ctx": "per-model", "rpm": "unverified", "rpd": "unverified", "toolcall": true, "verified": " 部分 2026-10-25" },
+      "models": { "strategy": "dynamic", "note": "免费清单动态（2026-10 快照：tencent/Hunyuan-MT-7B、XingChenAGI/Xing4.0-29B、PaddleOCR-VL）" },
+      "caveats": ["免费模型需实名", "限速为账号级、免费档固定限速较低，以探针实测为准"]
+    },
+    {
+      "id": "groq",
+      "name": "Groq Free plan",
+      "categories": ["keyed"],
+      "access": "proxy",
+      "signup": "https://console.groq.com/keys（注册即默认 Free plan）",
+      "endpoints": { "openai": "https://api.groq.com/openai/v1" },
+      "gates": { "ctx": "per-model(200K 类)", "rpm": 30, "rpd": 1000, "tpm": 8000, "toolcall": true, "verified": "官方限速页" },
+      "models": { "strategy": "static", "ids": ["openai/gpt-oss-120b", "openai/gpt-oss-20b", "qwen/qwen3.8-27b"], "note": "131K ctx；Llama 系免费档已下架；以 console Limits 页现值为准" },
+      "caveats": ["8K TPM 对长上下文代理工作很紧 → 事实卡标'OpenCode 轻用'", "organization 级限速共享", "无 Anthropic 端点（确认），不能给 Claude Code 直连", "Codex 需 Responses 协议：Groq 有 /v1/responses（未被收录为免费源 Responses 官方端，探针实测后标注）"]
+    },
+    {
+      "id": "gemini",
+      "name": "Google Gemini API 免费档（AI Studio）",
+      "categories": ["keyed"],
+      "access": "proxy",
+      "signup": "https://aistudio.google.com/apikey（免信用卡）",
+      "endpoints": { "openai": "https://generativelanguage.googleapis.com/v1beta/openai/" },
+      "gates": { "ctx": 1000000, "rpm": 15, "rpd": 1500, "toolcall": true, "verified": "mnfst 快照 2026-10-23（免费档以 AI Studio Limits 页为准）" },
+      "models": { "strategy": "dynamic", "note": "现行为 gemini-3.5/3.6/3.7/3.8-flash（mnfst 2026-10-23）；免费档只覆盖 Flash 系" },
+      "caveats": ["免费档 prompt 默认可能用于产品改进（EEA/UK/CH 除外）→ 隐私确认点名", "无 Anthropic 端点（确认）", "大陆访问需代理", "gemini-3.5 台阶 500 RPD，3.5/3.6 达 1500 RPD（阈值口径以控制台为准）"]
+    },
+    {
+      "id": "nvidia",
+      "name": "NVIDIA NIM（build.nvidia.com）",
+      "categories": ["keyed"],
+      "access": "unknown",
+      "signup": "https://build.nvidia.com/settings/api-keys（Developer Program 免费）",
+      "endpoints": { "openai": "https://integrate.api.nvidia.com/v1" },
+      "gates": { "ctx": "per-model", "rpm": 40, "rpd": 10000, "toolcall": "per-model", "verified": "mnfst 2026-10-23（多数模型 40 RPM/10K RPD）" },
+      "models": { "strategy": "dynamic", "note": "如 nemotron-3-super-120b-a12b（ctx 1M/262K 出）—— 以 /v1/models 为准" },
+      "caveats": ["Nemotron 端点条款明示数据记录用于改进 → 隐私确认点名", "个人限速在 dashboard 右上显示"]
+    },
+    {
+      "id": "mistral",
+      "name": "Mistral La Plateforme（Free mode）",
+      "categories": ["keyed"],
+      "access": "unknown",
+      "signup": "https://console.mistral.ai（手机验证，免卡）",
+      "endpoints": { "openai": "https://api.mistral.ai/v1" },
+      "gates": { "ctx": "per-model", "rpm": "unverified(官方不再公布免费数字限速)", "rpd": "unverified", "toolcall": true, "verified": "unverified" },
+      "models": { "strategy": "dynamic", "note": "2026-08 有'仅面向商业客户'重构传闻，未确认；接入前以探针为准" },
+      "caveats": ["免费限速官方不再公布，历史口径 ~1 RPS / 500K TPM 未确认", "Free 模式 prompt 默认可能用于训练，可 opt-out → 隐私确认点名"]
+    },
+    {
+      "id": "cloudflare",
+      "name": "Cloudflare Workers AI",
+      "categories": ["keyed"],
+      "access": "unknown",
+      "signup": "https://dash.cloudflare.com（免费账号 + API token + account_id）",
+      "endpoints": { "openaiUnsafe": { "base": "https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/v1", "note": "官方另有 OpenAI 兼容形态 /ai/v1（未确认）→ 实测；不通过则 REST /ai/run/{model} 走连接器" } },
+      "gates": { "ctx": "per-model", "rpm": "unverified", "rpd": "unverified", "quota": "10000 Neurons/日共享池（00:00 UTC 重置）", "toolcall": "per-model", "verified": "quota 官方" },
+      "models": { "strategy": "dynamic", "note": "7 个新旗舰被排除在免费外（kimi-k2.x-code / glm-5.x / deepseek-v4 系列）" },
+      "caveats": ["REST path 形态接入特殊，v1 标注 experimental"]
+    },
+    {
+      "id": "kilo",
+      "name": "Kilo AI Gateway（免 key）",
+      "categories": ["keyless"],
+      "access": "unknown",
+      "signup": "无需注册；key 不需要",
+      "endpoints": {
+        "openai": "https://ai-gateway.kilo.ai/api/v1",
+        "anthropic": { "base": "https://api.kilo.ai/api/gateway", "note": "隐性端点（官方未公开记载，2026-10 第三方实测 /v1/messages 返回 Anthropic 格式）" }
+      },
+      "gates": { "ctx": "per-model", "rpm": "unverified", "rph": 200, "toolcall": true, "verified": "2026-10-13 第三方实测" },
+      "models": { "strategy": "dynamic", "note": "~17 个免费池模型（Nemotron 3、poolside laguna、openrouter/free 等），catalog 会滞后" },
+      "caveats": [":free 免费池可能是其它免费池的中转，可能落到记录数据的 provider（官方文档自认）→ agent 用途接入需额外确认（中转类）", "匿名按 IP 限 200 req/h"]
+    },
+    {
+      "id": "llm7",
+      "name": "llm7.io（免费 token）",
+      "categories": ["keyless"],
+      "access": "unknown",
+      "signup": "https://token.llm7.io 取免费 token",
+      "endpoints": { "openai": "https://api.llm7.io/v1" },
+      "gates": { "ctx": "per-model", "rpm": 60, "rpd": 250, "tpd": "100000 tokens/24h", "toolcall": true, "verified": "官方 limits 页" },
+      "models": { "strategy": "dynamic" },
+      "caveats": ["token 额度 100K/24h 对生产 coding 偏小，被生产门槛默认筛掉，定位'轻用'", "免费档可能随时缩水"]
+    },
+    {
+      "id": "ovh",
+      "name": "OVHcloud AI Endpoints",
+      "categories": ["keyless"],
+      "access": "unknown",
+      "signup": "无需注册（匿名）",
+      "endpoints": { "openai": "https://oai.endpoints.kepler.ai.cloud.ovh.net/v1" },
+      "gates": { "ctx": "per-model", "rpm": 2, "rpd": "unverified", "toolcall": true, "verified": "官方" },
+      "models": { "strategy": "dynamic", "note": "20+ 开源模型，欧盟托管" },
+      "caveats": ["2 req/min per IP per model，对生产 coding 远低于门槛，被默认筛掉（定位'探测用'）"]
+    },
+    {
+      "id": "gonka",
+      "name": "Gonka Broker",
+      "categories": ["keyed"],
+      "access": "unknown",
+      "signup": "https://app.gonkabroker.com/signup（手机验证，免信用卡）",
+      "endpoints": { "openai": "https://proxy.gonkabroker.com/v1" },
+      "gates": { "ctx": 400000, "rpm": "unverified", "rpd": "unverified", "quota": "~1M tokens/月（共享，按模型浮动）", "toolcall": true, "verified": "mnfst 2026-10-23" },
+      "models": { "strategy": "dynamic", "ids": ["deepseek-ai/DeepSeek-V4-Flash-0731", "zai-org/GLM-5.3-Flash"], "note": "阵容随网络治理轮换，以 /v1/models 为准" },
+      "caveats": ["月度 token 池 ~1M 对生产 coding 属'轻用'档，顶格后当月不可用", "月度重置"]
+    },
+    {
+      "id": "ollama",
+      "name": "Ollama Cloud（免费档）",
+      "categories": ["keyed"],
+      "access": "unknown",
+      "signup": "https://ollama.com/settings/keys",
+      "endpoints": { "openai": "https://ollama.com/v1" },
+      "gates": { "ctx": 1000000, "rpm": "unverified", "rpd": "unverified", "toolcall": true, "verified": "unverified（mnfst：限速未公布，session/weekly 限制）" },
+      "models": { "strategy": "dynamic", "ids": ["deepseek-v4-flash", "gpt-oss:120b", "nemotron-3-ultra"], "note": "16 个云模型家族；OpenAI SDK 通过 /v1" },
+      "caveats": ["限速未公布（session/weekly）→ 生产可用性全赖探针", "1M ctx 模型（deepseek-v4-pro 系）很诱人，先探针再信"]
+    },
+    {
+      "id": "opencode-zen",
+      "name": "OpenCode 内置免费 ID（Zen）",
+      "categories": ["harness-attached"],
+      "access": "cn-direct(站点可达)",
+      "signup": "无需 key，OpenCode 客户端内直接选模型",
+      "endpoints": { "openai": "https://opencode.ai/inference/openai/v1/chat/completions" },
+      "gates": { "ctx": "per-model", "rpm": "unverified", "rpd": "unverified", "toolcall": true, "verified": "官方 Models 页" },
+      "models": { "strategy": "static", "ids": ["glm-5.3-flash-free", "deepseek-v4.1-flash-free", "big-pickle", "nemotron-3-*-free"], "note": "11 个限时免费 ID，价格页标 Free；beam-free 因大陆区域限制排除" },
+      "caveats": ["官方要求经 OpenCode 客户端使用（Free-tier models require OpenCode）→ 本条目仅在 OpenCode 侧提示，不写入其它 harness", "限时免费，随时可能转正收费"]
+    }
+  ]
+}

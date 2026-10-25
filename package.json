@@ -1,0 +1,9 @@
+{
+  "name": "free-models-skill",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "description": "free-models: daily-refreshed free-tier LLM sources registry, auto-connected into OpenCode / OpenAI Codex / Claude Code native configs. Zero npm dependencies.",
+  "engines": { "node": ">=20" }
+}

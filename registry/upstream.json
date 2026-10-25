@@ -1,0 +1,38 @@
+{
+  "$comment": "上游 feed 表（refresh.js 每日/按需抓取）。'信任'取决于上游维护者；策展层(L1)才是我们的编辑立场。",
+  "feeds": [
+    {
+      "id": "mnfst-data",
+      "type": "json-snapshot",
+      "url": "https://raw.githubusercontent.com/mnfst/awesome-free-llm-apis/main/data.json",
+      "license": "CC0",
+      "updateNote": "约每日更新，带 lastUpdated 时间戳；收录约 20 家永久免费档厂商的 provider/baseURL/限速/footnotes",
+      "trust": "high",
+      "contributes": ["provider", "baseUrl", "rateLimit", "footnotes"]
+    },
+    {
+      "id": "openrouter-live",
+      "type": "live-directory",
+      "url": "https://openrouter.ai/api/v1/models",
+      "license": "API 可自由读取",
+      "updateNote": "官方实时目录；:free 后缀模型按周变动；pricing.prompt==0 判免费",
+      "trust": "highest",
+      "contributes": ["modelsFree", "contextLength", "supportedParameters", "pricing"]
+    },
+    {
+      "id": "ma-pony-freellmapi",
+      "type": "markdown-snapshot",
+      "url": "https://raw.githubusercontent.com/ma-pony/awesome-free-llm-api/main/README.md",
+      "license": "见上游",
+      "updateNote": "带快照日期字段（上次见 2026-08-14），人读用；v1 仅作人工核对参考，不进自动管道",
+      "trust": "medium",
+      "contributes": []
+    }
+  ],
+  "excluded": [
+    { "id": "github-models", "reason": "2026-07-30 已整线下架（github.blog changelog 2026-07-01）— 剔除" },
+    { "id": "cerebras", "reason": "2026-07 起改为绑卡 Free Trial（$5/30天，非永久免费）— 不符合'免费档'定义" },
+    { "id": "beam-free（OpenCode Zen）", "reason": "区域限制：官方明确不面向中国大陆（含港/澳）— 排除" },
+    { "id": "*社区共享 key/中转站*", "reason": "Q2 边界：不收录任何来路不明的共享 key（zukijourney/apigpt/linux.do 分享帖等）" }
+  ]
+}

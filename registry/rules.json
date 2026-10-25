@@ -1,0 +1,48 @@
+{
+  "$comment": "free-models v1 校验规则。所有值为可配置默认，用户可改此文件。字段语义见 docs/README.zh.md#rules",
+  "gates": {
+    "$comment": "生产 coding 门槛（Q10 共识：tool-call 必须 + ctx>=128K + RPM>=15 + RPD>=50）",
+    "ctxMin": 128000,
+    "rpmMin": 15,
+    "rpdMin": 50,
+    "toolcallRequired": true
+  },
+  "probe": {
+    "$comment": "test.js 全链路探针参数（Q11 共识；火力控制在每源 <2K tokens）",
+    "completionMaxTokens": 10,
+    "completionPrompt": "Reply with exactly one word: ping",
+    "toolcallSchema": {
+      "$comment": "mock tool 用于验证 tool_calls 回环（生产门槛核心项）",
+      "name": "get_weather",
+      "description": "Look up the current weather for a city. Always use this tool when asked about weather.",
+      "parameters": {
+        "type": "object",
+        "properties": { "city": { "type": "string" } },
+        "required": ["city"]
+      },
+      "userAsk": "What is the weather in Tokyo right now? Use the available tool."
+    },
+    "rateSampleWindow": { "$comment": "限速抽样：10 秒窗口连发 5 发，统计 429 比例", "requests": 5, "windowMs": 10000 },
+    "nonStreaming": true,
+    "budgetTokensPerSource": 2000
+  },
+  "badge": {
+    "ttlDays": 14,
+    "$comment": "探针徽章有效期；过期后 status/refresh 标记 unverified-expired"
+  },
+  "flap": {
+    "rateChangePct": 0.2,
+    "deadStreak": 3,
+    "$comment": "限速突变阈值 20%；连续 deadStreak 次 refresh 探测失败才升级为死源候选（避免误杀短暂 429）"
+  },
+  "feeds": {
+    "concurrency": 3,
+    "timeoutMs": 10000,
+    "retries": 1,
+    "$comment": "代理：官方 fetch (undici) 读环境变量。Windows PowerShell 先执行 NODE_USE_ENV_PROXY=1 + $env:HTTPS_PROXY / $env:HTTP_PROXY 再跑脚本"
+  },
+  "openrouter": {
+    "freeRouterModel": "openrouter/free",
+    "$comment": "v1 内置兑底（Q13）：免费自动路由器，29 个 free 模型自动轮换"
+  }
+}

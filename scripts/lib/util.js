@@ -5,7 +5,9 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 export const HOME = os.homedir();
-export const STATE_DIR = path.join(HOME, '.free-models');
+export const STATE_DIR = process.env.FREE_MODELS_STATE_HOME
+  ? path.join(process.env.FREE_MODELS_STATE_HOME, '.free-models')
+  : path.join(HOME, '.free-models');
 export const STATE = {
   cacheJson: path.join(STATE_DIR, 'cache.json'),
   reportsDir: path.join(STATE_DIR, 'reports'),

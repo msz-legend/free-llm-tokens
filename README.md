@@ -68,6 +68,12 @@ skill 本体符合 AgentSkills 标准，clone 后一键装进多家 harness 的 
 | `~/.claude/skills/free-llm-tokens` | Claude Code |
 | `~/.codex/prompts/free-llm-tokens` | OpenAI Codex（无原生 skills，放 prompts 作会话引用卡） |
 
+每个落点都拷入**完整运行时**（`SKILL.md` + `scripts/` + `registry/` + `docs/`），装完即可直接跑，不依赖仓库路径；安装器自带完整性自检，缺文件会直接报错。装完可以这样验一下：
+
+```powershell
+node "$env:USERPROFILE\.agents\skills\free-llm-tokens\scripts\status.js"
+```
+
 卸载 = 删除对应目录，重启 harness 生效。
 
 **兼容说明**：数据目录沿用 `~/.free-models`、环境变量沿用 `FREE_MODELS_*` 前缀、Codex 锚点注释沿用 `# free-models:begin/end`——与既有安装完全兼容，无需迁移。

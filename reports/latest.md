@@ -1,8 +1,8 @@
-﻿# free-llm-tokens 日报 2026-10-26
+﻿# free-llm-tokens 日报 2026-10-27
 
-feeds：openrouter OK（20 free / 463）・mnfst OK（16，快照 2026-10-25）
+feeds：openrouter OK（19 free / 464）・mnfst OK（16，快照 2026-10-25）
 
-门槛筛选（pass/global34・条件通过1・被筛4）
+门槛筛选（pass/global33・条件通过1・被筛4）
 
 ## 通过/条件通过
 
@@ -20,7 +20,6 @@ feeds：openrouter OK（20 free / 463）・mnfst OK（16，快照 2026-10-25）
 - openrouter / nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free
 - openrouter / google/gemma-4-26b-a4b-it:free
 - openrouter / google/gemma-4-31b-it:free
-- openrouter / nvidia/nemotron-3-super-120b-a12b:free
 - openrouter / openrouter/free
 - bigmodel / glm-4.7-flash　△ ctx:per-model 待探针
 - zai / glm-4.7-flash　△ ctx:per-model 待探针
@@ -62,7 +61,6 @@ feeds：openrouter OK（20 free / 463）・mnfst OK（16，快照 2026-10-25）
 - +google/gemma-4-31b-it:free
 - +google/lyria-3-pro-preview
 - +google/lyria-3-clip-preview
-- +nvidia/nemotron-3-super-120b-a12b:free
 - +openrouter/free
 
 ## 备注

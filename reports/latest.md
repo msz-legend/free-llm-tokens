@@ -1,11 +1,12 @@
-﻿# free-llm-tokens 日报 2026-11-02
+﻿# free-llm-tokens 日报 2026-11-03
 
-feeds：openrouter OK（17 free / 451）・mnfst OK（15，快照 2026-10-25）
+feeds：openrouter OK（18 free / 454）・mnfst OK（15，快照 2026-10-25）
 
-门槛筛选（pass/global31・条件通过1・被筛4）
+门槛筛选（pass/global32・条件通过1・被筛4）
 
 ## 通过/条件通过
 
+- openrouter / stealth/crouton-alpha
 - openrouter / recursive/flint-v1.0:free
 - openrouter / xingchen-agi/xing4.0-29b-a4b:free
 - openrouter / nvidia/nemotron-3.5-super-vl:free
@@ -41,6 +42,7 @@ feeds：openrouter OK（17 free / 451）・mnfst OK（15，快照 2026-10-25）
 
 ## 模型集变化
 
+- +stealth/crouton-alpha
 - +recursive/flint-v1.0:free
 - +xingchen-agi/xing4.0-29b-a4b:free
 - +nvidia/nemotron-3.5-super-vl:free

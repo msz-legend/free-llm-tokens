@@ -1,15 +1,14 @@
-﻿# free-llm-tokens 日报 2026-11-10
+﻿# free-llm-tokens 日报 2026-11-11
 
-feeds：openrouter OK（16 free / 465）・mnfst OK（15，快照 2026-10-25）
+feeds：openrouter OK（15 free / 469）・mnfst OK（15，快照 2026-10-25）
 
-门槛筛选（pass/global31・条件通过1・被筛3）
+门槛筛选（pass/global30・条件通过1・被筛3）
 
 ## 通过/条件通过
 
 - openrouter / thinkingmachines/inkling-2-small:free
 - openrouter / liquid/lfm-3-1.7b:free
 - openrouter / recursive/flint-v1.0:free
-- openrouter / xingchen-agi/xing4.0-29b-a4b:free
 - openrouter / nvidia/nemotron-3.5-super-vl:free
 - openrouter / dots-studio/dots-3-note-preview:free
 - openrouter / nvidia/nemotron-3.5-lightning:free
@@ -44,7 +43,6 @@ feeds：openrouter OK（16 free / 465）・mnfst OK（15，快照 2026-10-25）
 - +thinkingmachines/inkling-2-small:free
 - +liquid/lfm-3-1.7b:free
 - +recursive/flint-v1.0:free
-- +xingchen-agi/xing4.0-29b-a4b:free
 - +nvidia/nemotron-3.5-super-vl:free
 - +dots-studio/dots-3-note-preview:free
 - +liquid/lfm-2.5-2.6b:free

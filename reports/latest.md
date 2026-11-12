@@ -1,11 +1,12 @@
-﻿# free-llm-tokens 日报 2026-11-11
+﻿# free-llm-tokens 日报 2026-11-12
 
-feeds：openrouter OK（15 free / 469）・mnfst OK（15，快照 2026-10-25）
+feeds：openrouter OK（16 free / 467）・mnfst OK（14，快照 2026-11-11）
 
-门槛筛选（pass/global30・条件通过1・被筛3）
+门槛筛选（pass/global31・条件通过1・被筛3）
 
 ## 通过/条件通过
 
+- openrouter / baidu/ernie-5.5-flash-preview:free
 - openrouter / thinkingmachines/inkling-2-small:free
 - openrouter / liquid/lfm-3-1.7b:free
 - openrouter / recursive/flint-v1.0:free
@@ -40,6 +41,7 @@ feeds：openrouter OK（15 free / 469）・mnfst OK（15，快照 2026-10-25）
 
 ## 模型集变化
 
+- +baidu/ernie-5.5-flash-preview:free
 - +thinkingmachines/inkling-2-small:free
 - +liquid/lfm-3-1.7b:free
 - +recursive/flint-v1.0:free

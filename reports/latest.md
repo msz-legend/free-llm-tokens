@@ -1,18 +1,18 @@
-﻿# free-llm-tokens 日报 2026-11-13
+﻿# free-llm-tokens 日报 2026-11-14
 
-feeds：openrouter OK（18 free / 475）・mnfst OK（14，快照 2026-11-11）
+feeds：openrouter OK（17 free / 471）・mnfst OK（14，快照 2026-11-12）
 
-门槛筛选（pass/global33・条件通过1・被筛3）
+门槛筛选（pass/global33・条件通过1・被筛2）
 
 ## 通过/条件通过
 
+- openrouter / inclusionai/ling-3.2-flash:free
 - openrouter / baidu/ernie-5.5-flash-preview:free
 - openrouter / thinkingmachines/inkling-2-small:free
 - openrouter / liquid/lfm-3-1.7b:free
 - openrouter / particle-ai/particle-1:free
 - openrouter / recursive/flint-v1.0:free
 - openrouter / nvidia/nemotron-3.5-super-vl:free
-- openrouter / apodex/apodex-1.1-mini:free
 - openrouter / dots-studio/dots-3-note-preview:free
 - openrouter / nvidia/nemotron-3.5-lightning:free
 - openrouter / cohere/north-mini-code:free
@@ -43,15 +43,14 @@ feeds：openrouter OK（18 free / 475）・mnfst OK（14，快照 2026-11-11）
 
 ## 模型集变化
 
+- +inclusionai/ling-3.2-flash:free
 - +baidu/ernie-5.5-flash-preview:free
 - +thinkingmachines/inkling-2-small:free
 - +liquid/lfm-3-1.7b:free
 - +particle-ai/particle-1:free
 - +recursive/flint-v1.0:free
 - +nvidia/nemotron-3.5-super-vl:free
-- +apodex/apodex-1.1-mini:free
 - +dots-studio/dots-3-note-preview:free
-- +liquid/lfm-2.5-2.6b:free
 - +nvidia/nemotron-3.5-lightning:free
 - +cohere/north-mini-code:free
 - +nvidia/nemotron-3-ultra-550b-a55b:free

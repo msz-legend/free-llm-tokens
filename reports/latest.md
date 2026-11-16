@@ -1,6 +1,6 @@
-﻿# free-llm-tokens 日报 2026-11-15
+﻿# free-llm-tokens 日报 2026-11-16
 
-feeds：openrouter OK（17 free / 471）・mnfst OK（14，快照 2026-11-12）
+feeds：openrouter OK（17 free / 467）・mnfst OK（14，快照 2026-11-12）
 
 门槛筛选（pass/global33・条件通过1・被筛2）
 

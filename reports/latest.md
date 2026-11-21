@@ -1,4 +1,4 @@
-﻿# free-llm-tokens 日报 2026-11-20
+﻿# free-llm-tokens 日报 2026-11-21
 
 feeds：openrouter OK（15 free / 478）・mnfst OK（15，快照 2026-11-15）
 
